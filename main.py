@@ -14,6 +14,7 @@ from typing import Type
 
 from data_loader import DataLoader
 from recommenders.base import BaseRecommender, BaselineRecommender
+from recommenders.svd_recommender import SVDRecommender, SVDPlusPlusRecommender
 from evaluation import evaluate_recommender, print_evaluation_results, cross_validate
 from submission import SubmissionGenerator
 
@@ -26,20 +27,20 @@ BASE_DATA_DIR = "recsys-runi-2026/"
 # Registry of available recommenders
 RECOMMENDER_REGISTRY = {
     'baseline': BaselineRecommender,
+    'svd': SVDRecommender,
+    'svd++': SVDPlusPlusRecommender,
     # Add more recommenders here as you implement them:
     # 'user_mean': UserMeanRecommender,
     # 'item_mean': ItemMeanRecommender,
-    # 'matrix_factorization': MatrixFactorizationRecommender,
-    # etc.
 }
 
 # Choose which recommender to use
-ACTIVE_RECOMMENDER = 'baseline'
+ACTIVE_RECOMMENDER = 'svd'
 
 # Choose what operations to run
 EVALUATE = True          # Evaluate on validation split
-SUBMIT = True           # Generate submission file
-CROSS_VALIDATE = True   # Run k-fold cross-validation
+SUBMIT = False           # Generate submission file
+CROSS_VALIDATE = False   # Run k-fold cross-validation
 
 # Parameters
 TEST_SIZE = 0.2          # Validation split size
@@ -47,7 +48,10 @@ N_FOLDS = 5              # Number of folds for cross-validation
 OUTPUT_PATH = None       # Submission output path (None = auto-generate)
 
 # Recommender hyperparameters (if needed)
-RECOMMENDER_KWARGS = {}
+RECOMMENDER_KWARGS = {
+    'n_factors': 50,      # Number of latent factors (higher = more complex)
+    'random_state': 42
+}
 
 # =======================================
 
